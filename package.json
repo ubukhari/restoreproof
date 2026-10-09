@@ -1,0 +1,75 @@
+{
+  "name": "restoreproof",
+  "version": "0.1.0",
+  "description": "A weekly backup of your Supabase, Neon or Postgres database, restored into a throwaway copy and checked table by table every time, in your own GitHub Actions. `init` writes one workflow and a dependency-free drill into your repo; `check` runs the same restore test from your machine. Nothing is sent to us. A CLI and a local MCP tool. No account.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "restoreproof": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "examples/recorded-run.json",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentwares/restoreproof.git"
+  },
+  "homepage": "https://agentwares-agentcheck.vercel.app/restoreproof",
+  "bugs": {
+    "url": "https://github.com/agentwares/restoreproof/issues"
+  },
+  "keywords": [
+    "postgres",
+    "postgresql",
+    "backup",
+    "restore",
+    "pg_dump",
+    "pg_restore",
+    "supabase",
+    "neon",
+    "disaster-recovery",
+    "restore-test",
+    "github-actions",
+    "mcp",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "record": "node scripts/record.mjs",
+    "pretest": "pnpm run build:dist",
+    "pretypecheck": "pnpm run build:dist",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "build:dist": "tsup"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^4.1.11"
+  }
+}

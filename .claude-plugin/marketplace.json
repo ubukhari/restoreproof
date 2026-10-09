@@ -1,0 +1,17 @@
+{
+  "name": "restoreproof",
+  "description": "restoreproof inside Claude Code: back a Supabase, Neon or Postgres database up and prove the backup restores, before a migration or on a weekly schedule in your own GitHub Actions. Open source, no account, nothing sent to us.",
+  "owner": {
+    "name": "agentwares",
+    "url": "https://github.com/agentwares"
+  },
+  "plugins": [
+    {
+      "name": "restoreproof",
+      "source": "./plugins/restoreproof",
+      "description": "Back up a Postgres database and prove the backup restores. /restoreproof:restoreproof runs `npx --allow-git=root github:agentwares/restoreproof` to test a restore now (before a migration, say) or to add the weekly restore-tested backup workflow to this repository, and explains what came back table by table.",
+      "category": "database",
+      "tags": ["postgres", "backup", "restore", "supabase", "neon", "pg_dump", "github-actions"]
+    }
+  ]
+}

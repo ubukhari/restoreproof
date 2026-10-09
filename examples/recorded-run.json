@@ -1,0 +1,155 @@
+{
+  "tool": "restoreproof",
+  "version": "0.1.0",
+  "at": "2026-10-09T20:37:54.239Z",
+  "mode": "live",
+  "ok": true,
+  "provider": "supabase",
+  "variable": "RESTOREPROOF_DATABASE_URL",
+  "source": {
+    "version": "17.9",
+    "major": 17,
+    "bytes": 9590451,
+    "schemas": [
+      "auth",
+      "extensions",
+      "public",
+      "storage",
+      "supabase_functions",
+      "supabase_migrations"
+    ],
+    "excludedSchemas": ["graphql"],
+    "excludedTableData": [
+      "storage.buckets_vectors",
+      "storage.vector_indexes",
+      "supabase_functions.hooks"
+    ]
+  },
+  "backup": {
+    "file": "restoreproof-20261009T203754Z.dump",
+    "bytes": 93742,
+    "seconds": 0.1,
+    "tool": "pg_dump 17.9"
+  },
+  "restore": {
+    "ok": true,
+    "seconds": 0.1,
+    "into": "PostgreSQL 17.9, a throwaway cluster on 127.0.0.1 with no other connections",
+    "error": null,
+    "skippedExtensions": []
+  },
+  "comparison": {
+    "ok": true,
+    "findings": [
+      {
+        "level": "note",
+        "code": "TABLE_DATA_LEFT_OUT",
+        "message": "the rows of supabase_functions.hooks are left out of the backup by design, as platform data Supabase writes for itself (its own restore guide leaves out the Storage vector tables); their definitions are checked",
+        "summary": "the rows of 1 Supabase platform table(s) are left out of the backup by design; their definitions are checked"
+      },
+      {
+        "level": "note",
+        "code": "SCHEMAS_LEFT_OUT",
+        "message": "1 Supabase platform schema(s) left out of the backup, as `supabase db dump` does: graphql",
+        "summary": "1 Supabase platform schema(s) left out of the backup, as `supabase db dump` does: graphql"
+      }
+    ],
+    "tables": [
+      {
+        "table": "auth.users",
+        "live": 400,
+        "restored": 400,
+        "verdict": "match"
+      },
+      {
+        "table": "public.events_2026_09",
+        "live": 1500,
+        "restored": 1500,
+        "verdict": "match"
+      },
+      {
+        "table": "public.events_2026_10",
+        "live": 1500,
+        "restored": 1500,
+        "verdict": "match"
+      },
+      {
+        "table": "public.notes",
+        "live": 2000,
+        "restored": 2000,
+        "verdict": "match"
+      },
+      {
+        "table": "public.profiles",
+        "live": 400,
+        "restored": 400,
+        "verdict": "match"
+      },
+      {
+        "table": "public.settings",
+        "live": 2,
+        "restored": 2,
+        "verdict": "match"
+      },
+      {
+        "table": "storage.buckets",
+        "live": 1,
+        "restored": 1,
+        "verdict": "match"
+      },
+      {
+        "table": "storage.objects",
+        "live": 120,
+        "restored": 120,
+        "verdict": "match"
+      },
+      {
+        "table": "supabase_migrations.schema_migrations",
+        "live": 2,
+        "restored": 2,
+        "verdict": "match"
+      }
+    ],
+    "objects": {
+      "source": 92,
+      "restored": 92,
+      "missing": 0,
+      "changed": 0,
+      "byKind": {
+        "table": 11,
+        "column": 37,
+        "constraint": 17,
+        "index": 14,
+        "view": 1,
+        "matview": 1,
+        "function": 2,
+        "trigger": 1,
+        "policy": 3,
+        "sequence": 3,
+        "enum": 1,
+        "domain": 1
+      }
+    },
+    "rows": {
+      "live": 5925,
+      "restored": 5925
+    },
+    "sameMajor": true
+  },
+  "restored": null,
+  "findings": [
+    {
+      "level": "note",
+      "code": "TABLE_DATA_LEFT_OUT",
+      "message": "the rows of supabase_functions.hooks are left out of the backup by design, as platform data Supabase writes for itself (its own restore guide leaves out the Storage vector tables); their definitions are checked",
+      "summary": "the rows of 1 Supabase platform table(s) are left out of the backup by design; their definitions are checked"
+    },
+    {
+      "level": "note",
+      "code": "SCHEMAS_LEFT_OUT",
+      "message": "1 Supabase platform schema(s) left out of the backup, as `supabase db dump` does: graphql",
+      "summary": "1 Supabase platform schema(s) left out of the backup, as `supabase db dump` does: graphql"
+    }
+  ],
+  "previous": null
+}
