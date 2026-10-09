@@ -1304,7 +1304,8 @@ async function drillLive(opts) {
           code: "RESTORE_FAILED",
           message: `the backup did not restore:
 ${restore.error ?? ""}`,
-          summary: "the backup did not restore; pg_restore's message is in the job log"
+          // shown only where the run is public (render.ts), whose job log is public too
+          summary: "the backup did not restore; pg_restore's message names the database's objects, so a public repository's run leaves it out: run `restoreproof check` where you keep the database URL to read it"
         },
         ...skipped.map((s2) => ({
           level: "note",

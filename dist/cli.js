@@ -1341,7 +1341,8 @@ async function drillLive(opts) {
           code: "RESTORE_FAILED",
           message: `the backup did not restore:
 ${restore.error ?? ""}`,
-          summary: "the backup did not restore; pg_restore's message is in the job log"
+          // shown only where the run is public (render.ts), whose job log is public too
+          summary: "the backup did not restore; pg_restore's message names the database's objects, so a public repository's run leaves it out: run `restoreproof check` where you keep the database URL to read it"
         },
         ...skipped.map((s2) => ({
           level: "note",
@@ -2081,7 +2082,8 @@ jobs:
           GH_TOKEN: \${{ github.token }}
         run: |
           echo "RESTOREPROOF_VISIBILITY=$(gh repo view "$GITHUB_REPOSITORY" --json visibility --jq .visibility || echo UNKNOWN)" >> "$GITHUB_ENV"
-          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow restoreproof.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
+          workflow=$(basename "\${GITHUB_WORKFLOW_REF%%@*}")
+          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
           if [ -n "$run" ]; then
             gh run download "$run" --repo "$GITHUB_REPOSITORY" --name restoreproof-facts --dir "$RUNNER_TEMP/previous" || echo "Run $run kept no facts."
           else

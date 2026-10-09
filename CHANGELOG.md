@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- **A self-test on GitHub's own runners** (`.github/workflows/selftest.yml`), weekly and on demand.
+  It runs the workflow `init` writes against a synthetic database in a `postgres:17` service
+  container: the apt install, the backup, restore and comparison, the encrypted artifact, the bucket
+  copy (to an S3 mock), and `gh run download`. A second job withholds an extension from the copy and
+  passes only when the drill reports `RESTORE_FAILED`. The file is generated from init's output, and
+  its first step fails if it has drifted from it.
+- The workflow reads the last good run's facts from its own file, whatever it is named, instead of
+  from `restoreproof.yml` only. A renamed workflow used to compare with nothing.
+- In a public repository, a failed restore no longer says pg_restore's message is in the job log:
+  it is left out there, since it names the database's objects. `restoreproof check` shows it.
+
 ## 0.1.0 (2026-10-09)
 
 First release.

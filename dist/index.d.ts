@@ -494,6 +494,27 @@ declare function factsFile(r: DrillResult, redact: boolean): FactsFile;
  */
 declare function previousFrom(text: string): Previous | null;
 
+declare const SELFTEST_PATH = ".github/workflows/selftest.yml";
+/**
+ * What stands in for each secret init's workflow reads. The URL is the service container's, the
+ * passphrase and keys are written here in the open, and the region is left empty so that the
+ * bucket step takes the R2 and MinIO path (`auto`).
+ */
+declare const SELFTEST_VALUES: Readonly<Record<string, string>>;
+/** The one change made to init's lines: `secrets.NAME` becomes the quoted test value. */
+declare function withTestValues(text: string): string;
+/** The self-test, from the workflow `init` wrote (its text, as written). */
+declare function renderSelftest(init: string): string;
+interface SelftestCheck {
+    ok: boolean;
+    lines: string[];
+}
+/**
+ * The self-test's first check: `repo`'s selftest.yml is what renderSelftest makes of the workflow
+ * `init` wrote into `customer`, and `repo`'s vendored drill is the one it wrote beside it.
+ */
+declare function checkSelftest(customer: string, repo: string): SelftestCheck;
+
 /** What the drill needs to know about the source before it dumps it. */
 declare const PROBE_SQL = "\nSELECT 'version', current_setting('server_version_num'), current_setting('server_version');\nSELECT 'role', (r.rolsuper OR r.rolbypassrls)::text, ''\n  FROM pg_roles r WHERE r.rolname = current_user;\nSELECT 'size', pg_database_size(current_database())::text, '';\nSELECT 'schema', n.nspname, ''\n  FROM pg_namespace n\n WHERE n.nspname !~ '^pg_' AND n.nspname <> 'information_schema'\n ORDER BY 2;\nSELECT 'extension', e.extname, n.nspname\n  FROM pg_extension e JOIN pg_namespace n ON n.oid = e.extnamespace\n WHERE e.extname <> 'plpgsql'\n ORDER BY 2;\nSELECT DISTINCT 'role_used', r::text, ''\n  FROM pg_policies, unnest(roles) AS r\n WHERE r::text <> 'public';\nSELECT DISTINCT 'role_used', usename::text, ''\n  FROM pg_user_mappings\n WHERE usename::text <> 'public';\nSELECT 'rls_blocked', n.nspname || '.' || c.relname, n.nspname\n  FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace\n WHERE c.relkind IN ('r', 'p') AND c.relrowsecurity\n   AND NOT pg_has_role(c.relowner, 'USAGE')\n   AND NOT EXISTS (SELECT 1 FROM pg_roles r WHERE r.rolname = current_user AND (r.rolsuper OR r.rolbypassrls));\n";
 /**
@@ -543,4 +564,4 @@ declare function filterToc(text: string, skipExtension: (name: string) => boolea
  */
 declare const VERSION = "0.1.0";
 
-export { CliError, type Cluster, type Comparison, DRILL_PATH, type DrillResult, type Facts, type Finding, HANDOFF_DETAIL, HANDOFF_LINE, HANDOFF_URL, HELP, INSTALL, NEVER_IN_COPY, ON_NPM, PAGES_URL, PROBE_SQL, PUBLISHED, type Previous, type Probe, type Problem, RECORDED_RUN, REF, REPO, RUN, SUPABASE_EXCLUDED_SCHEMAS, TOOLS, type TableCheck, URL_VARIABLES, VERSION, WORKFLOW_PATH, allowance, aptPackages, backupKind, bytes, callTool, checkConnection, compare, detectProvider, drillCommand, drillFile, drillLive, dumpArgs, factsFile, factsSql, filterToc, findPgBin, handleMessage, hashName, main, nextSteps, parseDatabaseUrl, parseFacts, parseProbe, parseToc, parseToolVersion, planInit, previousFrom, probeCommand, probeSource, providerOf, renderJson, renderMarkdown, renderText, renderWorkflow, repoRoot, scopeFor, shouldRedact, sourceUrl, startCluster, writeInit };
+export { CliError, type Cluster, type Comparison, DRILL_PATH, type DrillResult, type Facts, type Finding, HANDOFF_DETAIL, HANDOFF_LINE, HANDOFF_URL, HELP, INSTALL, NEVER_IN_COPY, ON_NPM, PAGES_URL, PROBE_SQL, PUBLISHED, type Previous, type Probe, type Problem, RECORDED_RUN, REF, REPO, RUN, SELFTEST_PATH, SELFTEST_VALUES, SUPABASE_EXCLUDED_SCHEMAS, TOOLS, type TableCheck, URL_VARIABLES, VERSION, WORKFLOW_PATH, allowance, aptPackages, backupKind, bytes, callTool, checkConnection, checkSelftest, compare, detectProvider, drillCommand, drillFile, drillLive, dumpArgs, factsFile, factsSql, filterToc, findPgBin, handleMessage, hashName, main, nextSteps, parseDatabaseUrl, parseFacts, parseProbe, parseToc, parseToolVersion, planInit, previousFrom, probeCommand, probeSource, providerOf, renderJson, renderMarkdown, renderSelftest, renderText, renderWorkflow, repoRoot, scopeFor, shouldRedact, sourceUrl, startCluster, withTestValues, writeInit };

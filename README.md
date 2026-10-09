@@ -17,6 +17,13 @@ No account, and nothing hosted by us. The backup stays in your repository's arti
 with your passphrase) or in your own bucket; nothing is sent to us, and nothing is fetched from us
 when it runs.
 
+**Tested on** GitHub's `ubuntu-24.04` runners every week by
+[the self-test](https://github.com/agentwares/restoreproof/actions/workflows/selftest.yml): the
+workflow `init` writes, run against a synthetic database in a `postgres:17` container, from the apt
+install to the encrypted backup fetched back with `gh run download` and read from a bucket, and a
+second job where the restore must fail with `RESTORE_FAILED`. Its latest run:
+[![self-test](https://github.com/agentwares/restoreproof/actions/workflows/selftest.yml/badge.svg)](https://github.com/agentwares/restoreproof/actions/workflows/selftest.yml)
+
 ## Why a restore test
 
 A `pg_dump` that exits 0 is not a backup you can restore. Version skew, an extension the new

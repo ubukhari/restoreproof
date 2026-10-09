@@ -158,7 +158,8 @@ jobs:
           GH_TOKEN: \${{ github.token }}
         run: |
           echo "RESTOREPROOF_VISIBILITY=$(gh repo view "$GITHUB_REPOSITORY" --json visibility --jq .visibility || echo UNKNOWN)" >> "$GITHUB_ENV"
-          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow restoreproof.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
+          workflow=$(basename "\${GITHUB_WORKFLOW_REF%%@*}")
+          run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty' || true)
           if [ -n "$run" ]; then
             gh run download "$run" --repo "$GITHUB_REPOSITORY" --name restoreproof-facts --dir "$RUNNER_TEMP/previous" || echo "Run $run kept no facts."
           else

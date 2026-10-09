@@ -34,6 +34,13 @@ export { TOOLS, callTool, handleMessage } from "./mcp.js";
 export { findPgBin, parseToolVersion } from "./pg.js";
 export { factsFile, previousFrom, renderJson, renderMarkdown, renderText } from "./render.js";
 export { NEVER_IN_COPY, SUPABASE_EXCLUDED_SCHEMAS, aptPackages, scopeFor } from "./scope.js";
+export {
+  SELFTEST_PATH,
+  SELFTEST_VALUES,
+  checkSelftest,
+  renderSelftest,
+  withTestValues,
+} from "./selftest.js";
 export { factsSql, PROBE_SQL } from "./sql.js";
 export { filterToc, parseToc } from "./toc.js";
 export { checkConnection, parseDatabaseUrl, providerOf } from "./url.js";

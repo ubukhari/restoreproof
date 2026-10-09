@@ -74,7 +74,10 @@ describe("the workflow", () => {
     expect(yaml).toContain("retention-days: 28");
     expect(yaml).toContain("name: restoreproof-facts");
     expect(yaml).toContain("sparse-checkout: .github/restoreproof");
-    expect(yaml).toContain("--workflow restoreproof.yml --status success");
+    // the last good run of this file, whatever it is named (a renamed workflow still compares)
+    expect(script("Read the last good run's facts and the repository's visibility")).toContain(
+      'workflow=$(basename "${GITHUB_WORKFLOW_REF%%@*}")\nrun=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" --status success',
+    );
   });
 
   it("names no command but the install constant", () => {
